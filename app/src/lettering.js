@@ -4,6 +4,8 @@
 // extrude, a script subtitle with a neon halo, a tracked tagline, one location caption per
 // panel, and four pieces of decoration that can be switched off independently.
 
+import { FONTS } from './fonts.js';
+
 export const FONT_DISPLAY = 'Anton';
 export const FONT_SCRIPT = 'Kaushan Script';
 
@@ -60,11 +62,11 @@ export function captionFor(state, panel, index) {
 
 export async function loadLetteringFonts() {
   const faces = [
-    [FONT_DISPLAY, new URL('../assets/fonts/Anton-Regular.ttf', import.meta.url).href],
-    [FONT_SCRIPT, new URL('../assets/fonts/KaushanScript-Regular.ttf', import.meta.url).href],
+    [FONT_DISPLAY, FONTS.Anton],
+    [FONT_SCRIPT, FONTS.KaushanScript],
   ];
-  const loaded = await Promise.all(faces.map(async ([family, href]) => {
-    const face = new FontFace(family, `url("${href}")`);
+  const loaded = await Promise.all(faces.map(async ([family, b64]) => {
+    const face = new FontFace(family, `url(data:font/ttf;base64,${b64})`);
     await face.load();
     document.fonts.add(face);
     return family;
