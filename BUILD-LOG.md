@@ -222,3 +222,72 @@ came back byte-identical to the shipped files (`1-cover-landscape.jpg` sha256
 `0bfb9b37687d23be2076292126cc3701b9230f19bddc82dd68398a344c19bb12`, `2-editor.jpg` sha256
 `3bdab61a6de80a71864e34a1d92c3dadcaa844b3f9464babd99a380e2e28e559`), and `screenshots/` is
 unmodified.
+
+## Opsi A2 — photographic samples
+
+**Why.** The five built-in samples were drawn placeholder scenes: flat gradients standing in for a
+beach, a car, a marina, a pier and a palm road. They made the tray look synthetic and they graded
+like flat fills, so a reviewer judging the presets saw the pipeline rather than a photograph. They
+are now real photographs, all public domain or CC0 so nothing has to be attributed to ship them.
+
+The sourcing ran in two recorded sessions. The first (6271c835) downloaded candidates and inspected
+files, and was cut off before anything entered the repo; this session completed the swap: licence
+verification, normalisation, the source register, the tray labels, the screenshot re-capture and the
+verification below. Sample file names stayed exactly as they were, so no layout, grade, preset or
+lettering code changed.
+
+**The five photographs.** Each is re-encoded once from the original to a browser-sized JPEG (RGB,
+long side capped at 1920 px, quality 85); the app's grades do all the colour work at render time.
+Full creator, licence and URL detail is in `SOURCES.md`.
+
+| Sample slot | Subject | Source page (Wikimedia Commons) | Licence | Final bytes |
+| --- | --- | --- | --- | --- |
+| `beach-sunglasses.jpg` | Crowded Barcelona beach, sea full of people | `File:Crowded Barcelona beach (Unsplash).jpg` | CC0 1.0 | 416132 |
+| `coastal-convertible.jpg` | White 1959 Cadillac convertible, Tallinn street | `File:1959 Cadillac Sixty-Two Convertible in Pikk street.jpg` | Public domain (PD-self) | 396751 |
+| `marina-golden.jpg` | Aerial Marina Grande, Sorrento, boats and turquoise water | `File:View of Marina Grande from SS145 at golden hour, Sorrento, 2010.jpg` | CC0 1.0 | 634153 |
+| `neon-pier.jpg` | Morey's Pier ferris wheel and boardwalk crowd at night | `File:Morey's Pier Ferris wheel night.JPG` | CC0 1.0 | 743475 |
+| `sunset-boulevard.jpg` | Palm-lined boulevard at sunset, Mission Beach | `File:Palm tree boulevard (Unsplash).jpg` | CC0 1.0 | 288892 |
+
+The tray labels were updated to match what each photo actually shows: `Palm Boulevard`,
+`Neon Pier`, `Beach Crowd`, `Classic Convertible`, `Sorrento Marina`. Ids and file names are
+untouched; `app/src/editor.js` changes only those five `name` strings.
+
+**Screenshots.** All four were re-captured from the running server in this session (CDP at each
+shot's render size, LANCZOS down to the `shots.json` size, JPEG under the 262144-byte cap).
+
+| File | Size | Old bytes | New bytes |
+| --- | --- | --- | --- |
+| `1-cover-landscape.jpg` | 1280 × 720 | 250425 | 242125 |
+| `2-editor.jpg` | 1280 × 720 | 189141 | 189596 |
+| `3-cover-portrait.jpg` | 1024 × 1280 | 255942 | 258224 |
+| `4-cover-square.jpg` | 1080 × 1080 | 247381 | 258460 |
+
+**Verification.**
+
+- *Licences.* Commons API `extmetadata` read for all five: four CC0 1.0 and one public domain
+  (PD-self, no licence URL). No pick needed its fallback.
+- *Sample files.* PIL confirms five RGB JPEGs at 1920 px long side; largest is 743475 bytes, so
+  every file is well under 1 MB.
+- *App load.* Headless Chromium against `node serve.ts`: the tray reached five entries, all five
+  `/samples/*.jpg` fetched with HTTP 200 and `image/jpeg`, and each decoded at its full size
+  (1920 × 1440, 1920 × 1082, 1920 × 1276, 1920 × 1440, 1920 × 1280).
+- *Spread.* One click filled four panels — status read `Spread 5 tray photos across 4 panels`,
+  footer `Grid Four / 4 panels / 4 photos placed / Sunset`.
+- *Console and network.* Zero console errors and zero exceptions; request schemes were 16 `http`
+  (all localhost) and 2 `data:` (the embedded fonts), with no foreign origin.
+- *Panel content.* Shot 1 is Slash Six, so six panels plus the hero. Each of the six interior boxes
+  sits inside its panel polygon and was proven free of lettering: the boxes were chosen against the
+  pixel difference between the finished shot and a lettering-free twin render (captions and all
+  four furniture pieces off), and each reports 0 ink pixels. On the shipped JPEG the six regions
+  have stddev 66.7, 34.1, 25.7, 46.2, 41.8 and 52.2 with means of
+  `[79,66,56]`, `[58,39,28]`, `[119,122,123]`, `[66,65,66]`, `[79,90,86]` and `[55,48,42]` — rich
+  photographic detail, not flat fill, and visibly different means. Cross-correlation between the
+  six regions stays at or below 0.37 (most near zero), so the cover is not six crops of one image;
+  the 0.37 pair is two crops of the same sunset sky, which is expected with five photos across six
+  panels.
+- *Determinism.* Shot 1 was captured twice and the raw CDP PNGs were byte-identical
+  (`a90295cd…77602`); encoding the shipped capture a second time reproduced
+  `1-cover-landscape.jpg` byte-for-byte (sha256 `4a21a8d9c13492cf8874a9e4559b9347fc8cc9e40bd820f93d2ecc463a6bdcb9`).
+- *Code.* `node --check` is clean on all nine `app/src` modules and `main.ts`; `git status` shows
+  only the five sample JPEGs, the four screenshots, `app/src/editor.js`, `BUILD-LOG.md` and the new
+  `SOURCES.md`.

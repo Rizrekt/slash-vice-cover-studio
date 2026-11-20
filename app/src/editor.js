@@ -3,11 +3,11 @@
 // panel's photo into an already-clipped canvas context and lets main.js compose the page.
 
 const SAMPLE_PHOTOS = [
-  { id: 'sample-sunset', name: 'Sunset Boulevard', file: 'sunset-boulevard.jpg' },
+  { id: 'sample-sunset', name: 'Palm Boulevard', file: 'sunset-boulevard.jpg' },
   { id: 'sample-neon', name: 'Neon Pier', file: 'neon-pier.jpg' },
-  { id: 'sample-beach', name: 'Beach Sunglasses', file: 'beach-sunglasses.jpg' },
-  { id: 'sample-coastal', name: 'Coastal Convertible', file: 'coastal-convertible.jpg' },
-  { id: 'sample-marina', name: 'Marina Golden', file: 'marina-golden.jpg' },
+  { id: 'sample-beach', name: 'Beach Crowd', file: 'beach-sunglasses.jpg' },
+  { id: 'sample-coastal', name: 'Classic Convertible', file: 'coastal-convertible.jpg' },
+  { id: 'sample-marina', name: 'Sorrento Marina', file: 'marina-golden.jpg' },
 ];
 
 const MIN_ZOOM = 1;
