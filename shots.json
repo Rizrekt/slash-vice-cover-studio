@@ -1,5 +1,30 @@
 [
-  { "name": "1-cover.jpg", "query": "?shot=cover&photo=pier&caption=Sunset%20Heist", "w": 1080, "h": 1080 },
-  { "name": "2-editor.jpg", "query": "?shot=editor&photo=boulevard&caption=Boulevard%20Queen", "w": 1280, "h": 720 },
-  { "name": "3-cover.jpg", "query": "?shot=cover&photo=boulevard&caption=Boulevard%20Queen", "w": 1080, "h": 1080 }
+  {
+    "name": "1-cover-landscape.jpg",
+    "query": "?shot=cover&preset=painterly-hero&layout=slash-six&grade=painterly&size=1920x1080",
+    "w": 1280,
+    "h": 720,
+    "note": "Slash Six + Painterly, 1920x1080 render captured down to 1280x720"
+  },
+  {
+    "name": "2-editor.jpg",
+    "query": "?shot=editor&preset=painterly-hero&layout=slash-six&grade=painterly",
+    "w": 1280,
+    "h": 720,
+    "note": "Full studio with the sample photos composed into Slash Six"
+  },
+  {
+    "name": "3-cover-portrait.jpg",
+    "query": "?shot=cover&preset=coastal-gold&layout=diagonal-trio&grade=golden&size=1080x1350",
+    "w": 1024,
+    "h": 1280,
+    "note": "Diagonal Trio + Golden Hour at 4:5, 1080x1350 render captured to 1024x1280"
+  },
+  {
+    "name": "4-cover-square.jpg",
+    "query": "?shot=cover&preset=ink-poster&layout=vice-wedge&grade=poster&size=1080x1080",
+    "w": 1080,
+    "h": 1080,
+    "note": "Vice Wedge + Poster Ink at 1:1"
+  }
 ]

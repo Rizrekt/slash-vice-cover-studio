@@ -1,0 +1,136 @@
+// One-click looks for the Slash Vice studio. A preset is a complete bundle — panel cut, colour
+// grade, finishing sliders, lettering copy and furniture switches — so a single press turns the
+// whole poster into a different film. Nothing here draws: presets only describe state, and
+// main.js applies it to every control before re-rendering.
+
+export const PRESETS = [
+  {
+    id: 'sunset-boulevard',
+    name: 'Sunset Boulevard',
+    note: 'Clean four-beat grid, warm Sunset grade, the full poster kit.',
+    layoutId: 'grid-four',
+    gradeId: 'sunset',
+    gradeOptions: { strength: 88, grain: 22, vignette: 38, halftone: 0 },
+    lettering: {
+      title: 'SUNSET BOULEVARD',
+      subtitle: 'a boulevard of very bad ideas',
+      tagline: 'ONE CITY · TWO ALIBIS · NO WAY OUT',
+      glow: 0.42,
+      stars: 5,
+      credits: 'SLASH STUDIO PRESENTS · A SLASH VICE PICTURE · SHOT ON LOCATION · 2026',
+      sealText: 'SLASH VICE ORIGINAL · EST. 2026',
+      barcodeSeed: 'SUNSET-BLVD-0142',
+      furniture: { badges: true, seal: true, ribbon: true, barcode: true },
+    },
+    captions: [
+      'MARINA DEL SOL · 7:40 PM',
+      'OCEAN DRIVE · 8:15 PM',
+      'THE NEON STRIP · 11:05 PM',
+      'PALM COURT · 6:20 PM',
+    ],
+  },
+  {
+    id: 'neon-vice',
+    name: 'Neon Vice',
+    note: 'Slanted hero cut, Neon Duotone panels, a subtitle that hums.',
+    layoutId: 'slash-hero',
+    gradeId: 'neon',
+    gradeOptions: { strength: 100, grain: 34, vignette: 46, halftone: 0 },
+    lettering: {
+      title: 'NEON VICE',
+      subtitle: 'the night pays better',
+      tagline: 'EVERY LIGHT ON THE STRIP IS A WARNING',
+      glow: 1,
+      stars: 4,
+      credits: 'SLASH STUDIO · NEON VICE · A MIDNIGHT PICTURE · 2026',
+      sealText: 'SLASH VICE ORIGINAL · EST. 2026',
+      barcodeSeed: 'NEON-VICE-0088',
+      furniture: { badges: true, seal: true, ribbon: true, barcode: true },
+    },
+    captions: [
+      'MARINA DEL SOL · 7:40 PM',
+      'OCEAN DRIVE · 8:15 PM',
+      'THE NEON STRIP · 11:05 PM',
+      'PIER NINE · LAST LIGHT',
+    ],
+  },
+  {
+    id: 'ink-poster',
+    name: 'Ink Poster',
+    note: 'Vice wedge cut, Poster Ink panels, only the essentials kept.',
+    layoutId: 'vice-wedge',
+    gradeId: 'poster',
+    gradeOptions: { strength: 100, grain: 12, vignette: 28, halftone: 0 },
+    lettering: {
+      title: 'INK POSTER',
+      subtitle: 'printed in one colour, meant in another',
+      tagline: 'A SLASH VICE PICTURE',
+      glow: 0.18,
+      stars: 3,
+      credits: 'SLASH STUDIO · INK POSTER · PRINTED OFFLINE · 2026',
+      sealText: 'SLASH VICE ORIGINAL · EST. 2026',
+      barcodeSeed: 'INK-POSTER-0301',
+      furniture: { badges: true, seal: false, ribbon: true, barcode: false },
+    },
+    captions: [
+      'THE WEDGE · 9:10 PM',
+      'HARBOUR CUT · 5:55 PM',
+      'CORNER BAR · 1:20 AM',
+    ],
+  },
+  {
+    id: 'coastal-gold',
+    name: 'Coastal Gold',
+    note: 'Leaning trio, Golden Hour glow, a barcode and a quiet seal.',
+    layoutId: 'diagonal-trio',
+    gradeId: 'golden',
+    gradeOptions: { strength: 92, grain: 18, vignette: 30, halftone: 12 },
+    lettering: {
+      title: 'COASTAL GOLD',
+      subtitle: 'chasing the last of the light',
+      tagline: 'THE COAST REMEMBERS EVERYTHING',
+      glow: 0.34,
+      stars: 5,
+      credits: 'SLASH STUDIO · COASTAL GOLD · IN COLOUR · 2026',
+      sealText: 'SLASH VICE ORIGINAL · EST. 2026',
+      barcodeSeed: 'COAST-GOLD-0777',
+      furniture: { badges: true, seal: true, ribbon: true, barcode: true },
+    },
+    captions: [
+      'MARINA DEL SOL · 7:40 PM',
+      'SEA WALL · 6:48 PM',
+      'GOLDEN PIER · 7:12 PM',
+    ],
+  },
+  {
+    id: 'painterly-hero',
+    name: 'Painterly Hero',
+    note: 'The six-panel slash, brushed into a hand-finished dusk.',
+    layoutId: 'slash-six',
+    gradeId: 'painterly',
+    gradeOptions: { strength: 92, grain: 20, vignette: 34, halftone: 0 },
+    lettering: {
+      title: 'PAINTED VICE',
+      subtitle: 'every frame a canvas',
+      tagline: 'ONE CITY · PAINTED AT DUSK · NO APOLOGIES',
+      glow: 0.5,
+      stars: 5,
+      credits: 'SLASH STUDIO · PAINTED VICE · A HAND-FINISHED PICTURE · 2026',
+      sealText: 'SLASH VICE ORIGINAL · EST. 2026',
+      barcodeSeed: 'PAINT-VICE-0517',
+      furniture: { badges: true, seal: true, ribbon: true, barcode: true },
+    },
+    captions: [
+      'CORMORANT CAY · 6:05 PM',
+      'SALTWATER FLATS · 7:20 PM',
+      'THE BRUSH HOUR · 5:48 PM',
+      'TERRACOTTA TIDE · 8:40 PM',
+      'LANTERN COVE · 9:15 PM',
+      'PAINTED SHORES · LAST DUSK',
+    ],
+  },
+];
+
+export function getPreset(presetId) {
+  return PRESETS.find((preset) => preset.id === presetId) ?? PRESETS[0];
+}

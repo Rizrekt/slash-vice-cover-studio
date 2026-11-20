@@ -1,23 +1,252 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cover Snap</title>
-<link rel="stylesheet" href="./style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#131019">
+  <title>Slash Vice — Slanted-Panel Cover Studio</title>
+  <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-<main class="app">
-  <section class="controls">
-    <h1>Cover Snap</h1>
-    <p>A photo and a caption, made into a square cover.</p>
-    <label>Photo <input id="photo" type="file" accept="image/*"></label>
-    <label>Caption <input id="caption" type="text" maxlength="40" value="Sunset Heist"></label>
-    <button id="export" type="button">Export PNG 1080 x 1080</button>
-    <p id="status" role="status"></p>
-  </section>
-  <canvas id="cover" width="1080" height="1080" aria-label="The cover"></canvas>
-</main>
-<script type="module" src="./src/main.js"></script>
+  <div class="studio-shell">
+    <header class="studio-header">
+      <div class="brand-lockup">
+        <div class="brand-mark" aria-hidden="true"><span>SV</span></div>
+        <div>
+          <p class="eyebrow">Slash Studio / Cover System 01</p>
+          <h1>Slash Vice</h1>
+          <p class="brand-intro">Cut the ordinary into a crime-story poster.</p>
+        </div>
+      </div>
+      <div class="header-meta" aria-label="Studio status">
+        <span><i class="status-light" aria-hidden="true"></i> Offline studio</span>
+        <span>T5 / Export &amp; capture</span>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <aside class="control-panel" aria-labelledby="controls-title">
+        <div class="panel-heading">
+          <div>
+            <p class="section-number">01 / Assemble</p>
+            <h2 id="controls-title">Cover controls</h2>
+          </div>
+          <span class="stage-chip">T5</span>
+        </div>
+
+        <section class="control-group preset-group" aria-labelledby="preset-label">
+          <div class="label-row">
+            <label id="preset-label">Presets</label>
+            <span class="control-index">00</span>
+          </div>
+          <div id="preset-picker" class="preset-picker" role="group" aria-label="One-click cover presets"></div>
+          <p class="control-note">A preset sets the cut, the grade, every slider, the copy and the furniture in one press. Editing anything afterwards keeps your change.</p>
+        </section>
+
+        <section class="control-group" aria-labelledby="layout-label">
+          <div class="label-row">
+            <label id="layout-label" for="layout-picker">Panel layout</label>
+            <span class="control-index">01</span>
+          </div>
+          <select id="layout-picker" class="select-input"></select>
+          <p id="layout-description" class="control-note">Four equal panels in a clean crime-scene grid.</p>
+        </section>
+
+        <section class="control-group" aria-labelledby="photo-label">
+          <div class="label-row">
+            <label id="photo-label" for="photo-input">Photo tray</label>
+            <span class="control-index">02</span>
+          </div>
+          <div id="photo-tray" class="photo-tray" role="group" aria-label="Photos available to the cover"></div>
+          <input id="photo-input" type="file" accept="image/*" multiple aria-describedby="photo-note">
+          <p id="photo-note" class="control-note">Pick a photo to drop it into the selected panel, or drag inside a panel to reframe.</p>
+        </section>
+
+        <section class="control-group" aria-labelledby="panel-label">
+          <div class="label-row">
+            <label id="panel-label">Selected panel</label>
+            <span class="control-index">03</span>
+          </div>
+          <p id="panel-selection" class="selection-label">Panel 01 · Placeholder scene</p>
+
+          <div class="slider-row">
+            <label for="zoom-input">Zoom</label>
+            <output id="zoom-value" for="zoom-input">100%</output>
+          </div>
+          <input id="zoom-input" class="range-input" type="range" min="1" max="2.4" step="0.02" value="1" disabled>
+
+          <div class="button-row">
+            <button id="center-button" class="ghost-button" type="button" disabled>Center</button>
+            <button id="clear-button" class="ghost-button" type="button" disabled>Clear panel</button>
+          </div>
+
+          <div class="field-stack">
+            <label class="field-label" for="panel-caption-input">Location caption</label>
+            <input id="panel-caption-input" class="text-input" type="text" maxlength="34" autocomplete="off" spellcheck="false" placeholder="MARINA DEL SOL · 7:40 PM">
+            <p id="panel-caption-note" class="control-note">Panel 01 of 4 · the field follows the selected cut</p>
+          </div>
+        </section>
+
+        <section class="control-group" aria-labelledby="fill-label">
+          <div class="label-row">
+            <label id="fill-label">Fill the grid</label>
+            <span class="control-index">04</span>
+          </div>
+          <div class="fill-grid">
+            <button id="auto-fill-button" class="ghost-button" type="button" disabled>Auto-Fill</button>
+            <button id="spread-button" class="ghost-button" type="button" disabled>Spread</button>
+            <button id="fill-one-button" class="ghost-button span-two" type="button" disabled>Fill-All with one photo</button>
+          </div>
+        </section>
+
+        <section class="control-group" aria-labelledby="grade-label">
+          <div class="label-row">
+            <label id="grade-label">Colour grade</label>
+            <span class="control-index">05</span>
+          </div>
+          <div id="grade-picker" class="grade-picker" role="group" aria-label="Colour grade"></div>
+          <p class="control-note">Grade: <strong id="grade-name">Sunset</strong>. The look is baked into the panels before the lettering is drawn.</p>
+
+          <div class="slider-row">
+            <label for="strength-input">Strength</label>
+            <output id="strength-value" for="strength-input">80%</output>
+          </div>
+          <input id="strength-input" class="range-input" type="range" min="0" max="100" step="1" value="80">
+
+          <div class="slider-row">
+            <label for="grain-input">Grain</label>
+            <output id="grain-value" for="grain-input">25</output>
+          </div>
+          <input id="grain-input" class="range-input" type="range" min="0" max="100" step="1" value="25">
+
+          <div class="slider-row">
+            <label for="vignette-input">Vignette</label>
+            <output id="vignette-value" for="vignette-input">35</output>
+          </div>
+          <input id="vignette-input" class="range-input" type="range" min="0" max="100" step="1" value="35">
+
+          <div class="slider-row">
+            <label for="halftone-input">Halftone</label>
+            <output id="halftone-value" for="halftone-input">0</output>
+          </div>
+          <input id="halftone-input" class="range-input" type="range" min="0" max="100" step="1" value="0">
+        </section>
+
+        <section class="control-group" aria-labelledby="lettering-label">
+          <div class="label-row">
+            <label id="lettering-label">Lettering</label>
+            <span class="control-index">06</span>
+          </div>
+
+          <div class="field-stack">
+            <label class="field-label" for="caption-input">Main title</label>
+            <input id="caption-input" class="text-input" type="text" value="SLASH VICE" maxlength="34" autocomplete="off" spellcheck="false">
+            <p class="control-note">Anton, sunset gradient, hard outline and a 3D extrude. Two words that do not fit stack into two lines.</p>
+          </div>
+
+          <div class="field-stack">
+            <label class="field-label" for="subtitle-input">Script subtitle</label>
+            <input id="subtitle-input" class="text-input" type="text" value="sun, sin &amp; second chances" maxlength="44" autocomplete="off" spellcheck="false">
+          </div>
+
+          <div class="slider-row">
+            <label for="glow-input">Neon glow</label>
+            <output id="glow-value" for="glow-input">65%</output>
+          </div>
+          <input id="glow-input" class="range-input" type="range" min="0" max="100" step="1" value="65">
+
+          <div class="field-stack">
+            <label class="field-label" for="tagline-input">Tagline</label>
+            <input id="tagline-input" class="text-input" type="text" value="EVERY PARADISE HAS A PRICE" maxlength="48" autocomplete="off" spellcheck="false">
+            <p class="control-note">Drawn small, in caps, with wide letter-spacing under the subtitle.</p>
+          </div>
+        </section>
+
+        <section class="control-group" aria-labelledby="furniture-label">
+          <div class="label-row">
+            <label id="furniture-label">Poster furniture</label>
+            <span class="control-index">07</span>
+          </div>
+
+          <div class="toggle-list">
+            <label class="toggle-row is-on">
+              <input type="checkbox" data-furniture="badges" checked>
+              <span class="toggle-name">Stars &amp; WANTED pill</span>
+            </label>
+            <label class="toggle-row is-on">
+              <input type="checkbox" data-furniture="seal" checked>
+              <span class="toggle-name">Circular seal</span>
+            </label>
+            <label class="toggle-row is-on">
+              <input type="checkbox" data-furniture="ribbon" checked>
+              <span class="toggle-name">Credit ribbon</span>
+            </label>
+            <label class="toggle-row is-on">
+              <input type="checkbox" data-furniture="barcode" checked>
+              <span class="toggle-name">Barcode</span>
+            </label>
+          </div>
+
+          <div class="slider-row">
+            <label for="stars-input">Stars lit</label>
+            <output id="stars-value" for="stars-input">4 / 5</output>
+          </div>
+          <input id="stars-input" class="range-input" type="range" min="1" max="5" step="1" value="4">
+
+          <div class="field-stack">
+            <label class="field-label" for="credits-input">Ribbon credits</label>
+            <input id="credits-input" class="text-input" type="text" value="SLASH STUDIO · A SLASH VICE PICTURE · IN COLOUR · 2026" maxlength="76" autocomplete="off" spellcheck="false">
+          </div>
+
+          <div class="field-stack">
+            <label class="field-label" for="seal-input">Seal text</label>
+            <input id="seal-input" class="text-input" type="text" value="SLASH VICE ORIGINAL · EST. 2026" maxlength="48" autocomplete="off" spellcheck="false">
+          </div>
+        </section>
+
+        <section class="control-group export-group" aria-labelledby="export-label">
+          <div class="label-row">
+            <label id="export-label">Export PNG</label>
+            <span class="control-index">08</span>
+          </div>
+          <div id="export-sizes" class="export-sizes" role="group" aria-label="Export the cover at a post size"></div>
+          <button id="export-all-button" class="export-all-button" type="button" disabled>
+            <span>Export all three sizes</span>
+            <span class="button-meta">3 PNG</span>
+          </button>
+          <p class="control-note">Each size recomposes the same panel, grade and lettering state. Type scales with the frame, so the wide cut reads as a cover rather than stretched text.</p>
+          <p id="studio-status" class="studio-status" role="status" aria-live="polite">Preparing the local display fonts…</p>
+        </section>
+
+        <div class="stage-note">
+          <span class="stage-note-rule" aria-hidden="true"></span>
+          <p>No uploads. No external assets. Every panel, gutter, letterform and barcode is drawn in the browser.</p>
+        </div>
+      </aside>
+
+      <section class="preview-panel" aria-labelledby="preview-title">
+        <div class="preview-heading">
+          <div>
+            <p class="section-number">02 / Artboard</p>
+            <h2 id="preview-title">Live cover preview</h2>
+          </div>
+          <span id="dimension-label" class="dimension-label">1080 × 1080</span>
+        </div>
+
+        <div class="canvas-frame">
+          <canvas id="cover-preview" width="1080" height="1080" aria-label="A poster of clipped photo panels with black gutters, a sunset-gradient title and printed poster furniture">
+            Your browser needs canvas support to show the Slash Vice preview.
+          </canvas>
+        </div>
+
+        <div class="preview-footer">
+          <span id="footer-summary">Grid Four / 4 panels / 0 photos placed</span>
+          <span id="footer-source" class="drawn-label">Code-drawn · no photo loaded</span>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
 </body>
 </html>
